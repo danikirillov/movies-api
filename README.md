@@ -13,4 +13,4 @@ and what changes would have to be made to keep the same quality of service
 
 
 P.S.
-Sorry for braces layout:) I'm using it for my current project and quite used to it, but it could look odd.
+Sorry for the braces layout:) I'm using it for my current project and quite used to it, but it could look odd.
