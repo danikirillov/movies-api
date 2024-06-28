@@ -1,0 +1,86 @@
+openapi: 3.0.1
+info:
+  title: Movies API
+  description: "There are 2 goals of this api: 1 - checks if a movie has a Best Picture Oscar. 2 - rating mechanism for movies"
+  version: 0.0.1
+  contact:
+    name: Daniil
+    email: danilokirillov@icloud.com
+servers:
+  - url: 'https://api.example.com'
+paths:
+  /is-best-picture-movie:
+    get:
+      summary: Check if a film is a Best Picture Oscar winner
+      description: Returns information about whether the provided film title has won the Best Picture Oscar.
+      operationId: isBestPictureMovie
+      parameters:
+        - name: title
+          in: query
+          description: Title of the film to check
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Information about the film's Oscar status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilmOscarStatus'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Not Implemented
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    FilmOscarStatus:
+      type: object
+      properties:
+        title:
+          type: string
+          description: The title of the film checked
+        isBestPictureWinner:
+          type: boolean
+          description: Indicates if the film is a Best Picture Oscar winner
+      required:
+        - title
+        - isBestPictureWinner
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A message describing the error
+        id:
+          type: string
+          description: The ID associated with the error for quick search in logs.
+      required:
+        - message
