@@ -3,4 +3,3 @@ Tech assumptions:
 
 Assumptions:
 1. The winners list is till 2010, and it's 2024 now, so I assume it isn't changed often, thus no special update mechanism is created.
-2. The rating part is only for "Best picture" Oscar films.

@@ -20,9 +20,9 @@ public class IsBestPictureMovieController implements IsBestPictureMovieApi
   }
 
   @Override
-  public ResponseEntity<FilmOscarStatus> isBestPictureMovie(String title)
+  public ResponseEntity<FilmOscarStatus> isBestPictureMovie(String title, String apiKey)
   {
-    LOG.info("Checking a movie with a title = '{}' for having a Best Picture Oscar.", title);
+    LOG.info("Checking a movie with a title = '{}' for having a Best Picture Oscar. API-KEY: {}", title, apiKey);
     return ResponseEntity.ok(service.isBestPicture(title));
   }
 }

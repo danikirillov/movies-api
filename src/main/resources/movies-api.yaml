@@ -7,7 +7,7 @@ info:
     name: Daniil
     email: danilokirillov@icloud.com
 servers:
-  - url: 'https://api.example.com'
+  - url: 'http://localhost:8080'
 paths:
   /is-best-picture-movie:
     get:
@@ -18,6 +18,12 @@ paths:
         - name: title
           in: query
           description: Title of the film to check
+          required: true
+          schema:
+            type: string
+        - name: apiKey
+          in: header
+          description: API key for authentication
           required: true
           schema:
             type: string
@@ -58,8 +64,131 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /rated-movies:
+    get:
+      summary: Check if a film is a Best Picture Oscar winner
+      description: Returns information about whether the provided film title has won the Best Picture Oscar.
+      operationId: getTopRatedMovies
+      parameters:
+        - name: apiKey
+          in: header
+          description: API key for authentication
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of 10 top rated movies sorted by box office.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RatedMovie'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Not Implemented
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Save a movie rating
+      description: Saves the rating for a specific movie by sending the movie title and rating in the request body.
+      operationId: updateMovieRating
+      parameters:
+        - name: apiKey
+          in: header
+          description: API key for authentication
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - rating
+              properties:
+                title:
+                  type: string
+                  example: "Inception"
+                rating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                  example: 4
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                default: "Rating saved."
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Not Implemented
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
   schemas:
     FilmOscarStatus:
       type: object
@@ -84,3 +213,15 @@ components:
           description: The ID associated with the error for quick search in logs.
       required:
         - message
+    RatedMovie:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Inception"
+        rating:
+          type: string
+          example: "3.4/5.0"
+        boxOffice:
+          type: long
+          example: 8000000
