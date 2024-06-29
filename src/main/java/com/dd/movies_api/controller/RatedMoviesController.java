@@ -3,6 +3,7 @@ package com.dd.movies_api.controller;
 import com.dd.movies_api.api.RatedMoviesApi;
 import com.dd.movies_api.model.RatedMovie;
 import com.dd.movies_api.model.UpdateMovieRatingRequest;
+import com.dd.movies_api.service.OmdbService;
 import com.dd.movies_api.service.RatedMovieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +17,12 @@ public class RatedMoviesController implements RatedMoviesApi
 {
   private static final Logger LOG = LoggerFactory.getLogger(RatedMoviesController.class);
   private final RatedMovieService ratedMovieService;
+  private final OmdbService omdbService;
 
-  public RatedMoviesController(RatedMovieService ratedMovieService)
+  public RatedMoviesController(RatedMovieService ratedMovieService, OmdbService omdbService)
   {
     this.ratedMovieService = ratedMovieService;
+    this.omdbService = omdbService;
   }
 
   @Override
@@ -39,6 +42,10 @@ public class RatedMoviesController implements RatedMoviesApi
         updateMovieRatingRequest.getRating(),
         apiKey
     );
+
+    if (boxOffice == RatedMovieService.NO_BOX_OFFICE) {
+      omdbService.updateBoxOffice();
+    }
 
     return ResponseEntity.ok("Rating submitted.");
   }

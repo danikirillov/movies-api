@@ -12,7 +12,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         UserDetailsServiceAutoConfiguration.class
     }
 )
-@EnableJpaRepositories
 public class MoviesApiApplication
 {
 

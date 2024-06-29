@@ -1,6 +1,7 @@
 package com.dd.movies_api.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.util.Objects;
@@ -9,6 +10,7 @@ import java.util.Objects;
 @Table(name = "rated_movie")
 public class RatedMovieEntity
 {
+  @Id
   private int id;
   private int rating;
   private long ratingTotal;

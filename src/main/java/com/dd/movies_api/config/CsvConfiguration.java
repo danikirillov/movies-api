@@ -13,7 +13,7 @@ public class CsvConfiguration
 {
 
   @Bean(name = "bestPictures")
-  public Set<String> fetchBestPictures(@Value("${csv.best_pictures.path}") String filePath) throws IOException
+  public Set<String> fetchBestPictures(@Value("${csv.path.best_pictures}") String filePath) throws IOException
   {
     return CsvUtil.fetchMovieTitles(filePath);
   }

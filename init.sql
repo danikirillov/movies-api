@@ -1,1 +1,1 @@
-create database movies-api
+create database movies_api

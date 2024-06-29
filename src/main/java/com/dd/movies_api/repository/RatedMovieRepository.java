@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RatedMovieRepository extends JpaRepository<RatedMovieEntity, Integer>
 {
+  RatedMovieEntity findByTitle(String title);
 }
