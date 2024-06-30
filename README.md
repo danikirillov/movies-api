@@ -1,5 +1,10 @@
 ## It's Movies-API
 
+Initial task:
+Create a Java web application. The application should Indicate whether a movie won a “Best Picture” Oscar, given a movie’s title based on this and this thatAPI CSV file
+contains winners from 1927 until 2010. It should also allow users to give a rating to movies and provide a list of 10 top-rated movies ordered by
+box office value.
+
 And here you can find a list of the documentation files:
 
 - [solution.md](documentation/solution.md) – a short (min two lines, max half a page) description of the solution and explaining some design decisions

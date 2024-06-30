@@ -5,16 +5,15 @@ spring:
     virtual:
       enabled: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/movies_api
+    url: ${DB_URL}
     username: admin
     password: admin
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+server:
+  port: 8082
 csv:
   path:
     best_pictures: static/best_pictures.csv
@@ -22,3 +21,12 @@ tmp:
   valid:
     api:
       key: 42
+omdb:
+  apiKey: ${OMDB_API_KEY}
+  url: http://www.omdbapi.com
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

@@ -7,7 +7,7 @@ info:
     name: Daniil
     email: danilokirillov@icloud.com
 servers:
-  - url: 'http://localhost:8080'
+  - url: 'http://localhost:8082'
 paths:
   /is-best-picture-movie:
     get:
@@ -21,7 +21,7 @@ paths:
           required: true
           schema:
             type: string
-        - name: apiKey
+        - name: X-API-Key
           in: header
           description: API key for authentication
           required: true
@@ -66,11 +66,10 @@ paths:
                 $ref: '#/components/schemas/Error'
   /rated-movies:
     get:
-      summary: Check if a film is a Best Picture Oscar winner
-      description: Returns information about whether the provided film title has won the Best Picture Oscar.
+      summary: Get the top 10 movies sorted by rating and boxOffice.
       operationId: getTopRatedMovies
       parameters:
-        - name: apiKey
+        - name: X-API-Key
           in: header
           description: API key for authentication
           required: true
@@ -120,7 +119,7 @@ paths:
       description: Saves the rating for a specific movie by sending the movie title and rating in the request body.
       operationId: updateMovieRating
       parameters:
-        - name: apiKey
+        - name: X-API-Key
           in: header
           description: API key for authentication
           required: true
@@ -184,11 +183,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 
 components:
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: X-API-Key
   schemas:
     FilmOscarStatus:
       type: object
@@ -223,5 +217,6 @@ components:
           type: string
           example: "3.4/5.0"
         boxOffice:
-          type: long
+          type: integer
+          format: int64
           example: 8000000

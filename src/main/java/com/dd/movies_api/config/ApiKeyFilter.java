@@ -14,6 +14,7 @@ import java.io.IOException;
 
 public class ApiKeyFilter extends OncePerRequestFilter
 {
+  public static final String API_KEY_HEADER = "X-API-Key";
   private final String validKey;
 
   public ApiKeyFilter(String validKey)
@@ -27,7 +28,7 @@ public class ApiKeyFilter extends OncePerRequestFilter
       HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException
   {
-    final var apiKey = request.getHeader("X-API-Token");
+    final var apiKey = request.getHeader(API_KEY_HEADER);
     if (apiKey == null || isApiKeyInvalid(apiKey))
     {
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -44,7 +45,7 @@ public class ApiKeyFilter extends OncePerRequestFilter
 
   private boolean isApiKeyInvalid(String apiKey)
   {
-    return !validKey.equals(apiKey);
+    return !apiKey.endsWith(validKey);
   }
 
 }

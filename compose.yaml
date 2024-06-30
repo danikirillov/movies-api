@@ -3,12 +3,15 @@ services:
     build:
       context: .
     environment:
-      DB_URL: "jdbc:postgresql://localhost:5432/movies_api"
+      OMDB_API_KEY: your_key
+      DB_URL: jdbc:postgresql://postgres:5432/movies_api
     ports:
-      - 8080:8080
+      - 8082:8082
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - movie_network
 
   postgres:
     image: postgres
@@ -25,3 +28,9 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - movie_network
+
+networks:
+  movie_network:
+    driver: bridge

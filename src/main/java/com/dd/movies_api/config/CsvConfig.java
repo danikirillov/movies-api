@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Set;
 
 @Configuration
-public class CsvConfiguration
+public class CsvConfig
 {
 
   @Bean(name = "bestPictures")

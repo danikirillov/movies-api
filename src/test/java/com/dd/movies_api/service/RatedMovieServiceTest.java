@@ -1,6 +1,5 @@
 package com.dd.movies_api.service;
 
-import com.dd.movies_api.model.RatedMovie;
 import com.dd.movies_api.model.RatedMovieEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -19,9 +18,9 @@ class RatedMovieServiceTest
     int rating = 25;
     final var expected = "2.5/5.0";
     final var ratedMovieService = new RatedMovieService(null, null);
-    final var computeRatingMethod = getFrMethod();
+    final var formatRatingMethod = getFrMethod();
 
-    final String actual = (String) computeRatingMethod.invoke(ratedMovieService, rating);
+    final String actual = (String) formatRatingMethod.invoke(ratedMovieService, rating);
 
     Assertions.assertEquals(expected, actual);
   }

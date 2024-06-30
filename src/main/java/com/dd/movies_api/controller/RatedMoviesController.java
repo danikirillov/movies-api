@@ -44,7 +44,7 @@ public class RatedMoviesController implements RatedMoviesApi
     );
 
     if (boxOffice == RatedMovieService.NO_BOX_OFFICE) {
-      omdbService.updateBoxOffice();
+      omdbService.updateBoxOffice(updateMovieRatingRequest.getTitle());
     }
 
     return ResponseEntity.ok("Rating submitted.");

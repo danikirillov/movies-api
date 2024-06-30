@@ -1,10 +1,10 @@
 package com.dd.movies_api.service;
 
+import com.dd.movies_api.dao.RatedMovieRepository;
+import com.dd.movies_api.dao.RatingsRepository;
 import com.dd.movies_api.model.RatedMovie;
 import com.dd.movies_api.model.RatedMovieEntity;
 import com.dd.movies_api.model.RatingsEntity;
-import com.dd.movies_api.repository.RatedMovieRepository;
-import com.dd.movies_api.repository.RatingsRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -16,12 +16,12 @@ import java.util.List;
 @Service
 public class RatedMovieService
 {
-  public static int NO_BOX_OFFICE = -1;
+  public static final int NO_BOX_OFFICE = -1;
   private static final double ONE_NUMBER_AFTER_DOT = 10.0d;
-  private static final Sort BOX_OFFICE_SORT = Sort.by(Sort.Direction.ASC, "boxOffice");
-  private static final Sort RATING_SORT = Sort.by(Sort.Direction.ASC, "rating");
+  private static final Sort BOX_OFFICE_SORT = Sort.by(Sort.Direction.DESC, "boxOffice");
+  private static final Sort RATING_SORT = Sort.by(Sort.Direction.DESC, "rating");
   private static final PageRequest LIMIT_BY_TEN_AND_SORT_BY_BOX_OFFICE =
-      PageRequest.of(1, 10, RATING_SORT.and(BOX_OFFICE_SORT));
+      PageRequest.of(0, 10, RATING_SORT.and(BOX_OFFICE_SORT));
 
   private final RatedMovieRepository ratedMovieRepository;
   private final RatingsRepository ratingsRepository;
@@ -86,13 +86,14 @@ public class RatedMovieService
     // Updating movie rating information
     RatedMovieEntity ratedMovie = ratedMovieRepository.findByTitle(title);
 
-    if (ratedMovie == null) {
+    if (ratedMovie == null)
+    {
       ratedMovie = new RatedMovieEntity();
       ratedMovie.setTitle(title);
       ratedMovie.setBoxOffice(NO_BOX_OFFICE);
     }
 
-    ratedMovie.setRatingTotal(ratedMovie.getRating() + actualRating);
+    ratedMovie.setRatingTotal(ratedMovie.getRatingTotal() + actualRating);
     ratedMovie.setRatersAmount(ratedMovie.getRatersAmount() + actualRatersAmount);
     ratedMovie.setRating(computeRating(ratedMovie));
 
@@ -104,7 +105,8 @@ public class RatedMovieService
   private int computeRating(RatedMovieEntity ratedMovie)
   {
     // This zero thing can happen only due to some database inconsistency, but it's really annoying to have division by 0.
-    if (ratedMovie.getRatersAmount() == 0) {
+    if (ratedMovie.getRatersAmount() == 0)
+    {
       return 0;
     }
 

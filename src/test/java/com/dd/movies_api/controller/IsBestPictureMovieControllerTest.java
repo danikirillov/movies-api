@@ -1,24 +1,47 @@
 package com.dd.movies_api.controller;
 
+import com.dd.movies_api.HttpClientUtil;
 import com.dd.movies_api.model.FilmOscarStatus;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.Collections;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@ActiveProfiles({"test"})
 class IsBestPictureMovieControllerTest
 {
-  private static final String X_API_TOKEN = "X-API-Token";
   private static final String BASE_URL = "/is-best-picture-movie";
   @Autowired
   TestRestTemplate httpClient;
+  static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
+      "postgres:16-alpine"
+  );
+
+  @BeforeAll
+  static void beforeAll()
+  {
+    postgres.start();
+  }
+
+  @AfterAll
+  static void afterAll()
+  {
+    postgres.stop();
+  }
+
+  @DynamicPropertySource
+  static void configureProperties(DynamicPropertyRegistry registry)
+  {
+    registry.add("spring.datasource.url", postgres::getJdbcUrl);
+    registry.add("spring.datasource.username", postgres::getUsername);
+    registry.add("spring.datasource.password", postgres::getPassword);
+  }
 
   @Test
   @DisplayName("isBestPictureMovie - with best picture movie, correct api-token - title + true")
@@ -27,7 +50,7 @@ class IsBestPictureMovieControllerTest
     final var token = "42";
     final var title = "Black Swan";
     final var expectedResponse = new FilmOscarStatus(title, true);
-    setSecurityHeader(token);
+    HttpClientUtil.setSecurityHeader(httpClient, token);
 
     final var actualResponseEntity =
         httpClient
@@ -47,7 +70,7 @@ class IsBestPictureMovieControllerTest
     final var token = "42";
     final var title = "Shrek";
     final var expectedResponse = new FilmOscarStatus(title, false);
-    setSecurityHeader(token);
+    HttpClientUtil.setSecurityHeader(httpClient, token);
 
     final var actualResponseEntity =
         httpClient
@@ -79,18 +102,6 @@ class IsBestPictureMovieControllerTest
   private String createUrlForTitle(String title)
   {
     return String.format("%s?title=%s", BASE_URL, title);
-  }
-
-  private void setSecurityHeader(String token)
-  {
-    httpClient.getRestTemplate().setInterceptors(
-        Collections.singletonList((request, body, execution) ->
-                                  {
-                                    request.getHeaders()
-                                           .add(X_API_TOKEN, token
-                                           );
-                                    return execution.execute(request, body);
-                                  }));
   }
 
 }

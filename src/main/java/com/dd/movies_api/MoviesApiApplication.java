@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication(
     exclude = {
@@ -12,6 +14,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         UserDetailsServiceAutoConfiguration.class
     }
 )
+@EnableAsync
+@EnableJpaRepositories
+@EnableTransactionManagement
 public class MoviesApiApplication
 {
 

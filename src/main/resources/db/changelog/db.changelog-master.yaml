@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Daniil
+      changes:
+        - sqlFile:
+            dbms: all
+            endDelimiter: ";"
+            splitStatements: true
+            path: classpath:/db/changelog/tables.sql
+            stripComments: true

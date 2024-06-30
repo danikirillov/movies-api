@@ -1,4 +1,4 @@
-package com.dd.movies_api.repository;
+package com.dd.movies_api.dao;
 
 import com.dd.movies_api.model.RatedMovieEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
