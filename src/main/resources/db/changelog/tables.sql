@@ -11,5 +11,5 @@ CREATE TABLE IF NOT EXISTS rated_movie (
     rating_total BIGINT,
     raters_amount BIGINT,
     title VARCHAR(255),
-    boxOffice BIGINT
+    box_office BIGINT
 );
