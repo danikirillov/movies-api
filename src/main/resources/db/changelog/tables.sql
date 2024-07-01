@@ -1,3 +1,4 @@
+-- User rating connection with a movie title
 CREATE TABLE IF NOT EXISTS ratings (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255),
@@ -5,6 +6,7 @@ CREATE TABLE IF NOT EXISTS ratings (
     rating INTEGER
 );
 
+-- Movie rating
 CREATE TABLE IF NOT EXISTS rated_movie (
     id SERIAL PRIMARY KEY,
     rating INTEGER,

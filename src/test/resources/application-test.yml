@@ -1,2 +1,5 @@
 omdb:
   apiKey: test_key
+spring:
+  datasource:
+    url: jdbc:postgresql://0.0.0.0:5432/movies_api
